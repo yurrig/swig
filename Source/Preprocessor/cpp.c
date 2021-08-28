@@ -80,7 +80,7 @@ static void copy_location(const DOH *s1, DOH *s2) {
   Setline(s2, Getline((DOH *) s1));
 }
 
-static String *cpp_include(const_String_or_char_ptr fn, int sysfile) {
+static String *cpp_include(const_String_or_char_ptr fn, int sysfile, int single_include) {
   String *s = sysfile ? Swig_include_sys(fn) : Swig_include(fn);
   if (s && single_include) {
     String *file = Getfile(s);
@@ -155,6 +155,7 @@ static String *kpp_level = 0;
 static String *kpp_dline = 0;
 static String *kpp_ddefine = 0;
 static String *kpp_dinclude = 0;
+static String *kpp_dfinclude = 0;
 static String *kpp_dimport = 0;
 static String *kpp_dbeginfile = 0;
 static String *kpp_dextern = 0;
@@ -192,6 +193,7 @@ void Preprocessor_init(void) {
   kpp_varargs = NewString("varargs");
 
   kpp_dinclude = NewString("%include");
+  kpp_dfinclude = NewString("%force_include");
   kpp_dimport = NewString("%import");
   kpp_dbeginfile = NewString("%beginfile");
   kpp_dextern = NewString("%extern");
@@ -241,6 +243,7 @@ void Preprocessor_delete(void) {
   Delete(kpp_varargs);
 
   Delete(kpp_dinclude);
+  Delete(kpp_dfinclude);
   Delete(kpp_dimport);
   Delete(kpp_dbeginfile);
   Delete(kpp_dextern);
@@ -1780,7 +1783,7 @@ String *Preprocessor_parse(String *s) {
 	  }
 	  Seek(value, 0, SEEK_SET);
 	  fn = get_filename(value, &sysfile);
-	  s1 = cpp_include(fn, sysfile);
+	  s1 = cpp_include(fn, sysfile, single_include);
 	  if (s1) {
 	    if (include_all)
 	      Printf(ns, "%%includefile \"%s\" %%beginfile\n", Swig_filename_escape(Swig_last_file()));
@@ -1917,7 +1920,7 @@ String *Preprocessor_parse(String *s) {
       if (!isidchar(c)) {
 	Ungetc(c, s);
 	/* Look for common SWIG directives  */
-	if (Equal(decl, kpp_dinclude) || Equal(decl, kpp_dimport) || Equal(decl, kpp_dextern)) {
+	if (Equal(decl, kpp_dinclude) || Equal(decl, kpp_dfinclude) || Equal(decl, kpp_dimport) || Equal(decl, kpp_dextern)) {
 	  /* Got some kind of file inclusion directive, eg: %import(option1="value1") "filename" */
 	  if (allow) {
 	    DOH *s1, *s2, *fn, *opt;
@@ -1935,7 +1938,11 @@ String *Preprocessor_parse(String *s) {
 
 	    skip_whitespace(s, filename_whitespace);
 	    fn = get_filename(s, &sysfile);
-	    s1 = cpp_include(fn, sysfile);
+	    int si = single_include;
+	    if (Equal(decl, kpp_dfinclude)) {
+	    	 si = 0;
+	    }
+	    s1 = cpp_include(fn, sysfile, si);
 	    if (s1) {
 	      String *dirname;
 	      copy_location(s, chunk);

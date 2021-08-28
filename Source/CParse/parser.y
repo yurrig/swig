@@ -1606,7 +1606,7 @@ static String *add_qualifier_to_declarator(SwigType *type, SwigType *qualifier) 
 %token <str> HBLOCK
 %token <id> POUND 
 %token <id> STRING WSTRING
-%token <loc> INCLUDE IMPORT INSERT
+%token <loc> INCLUDE FORCEINCLUDE IMPORT INSERT
 %token <str> CHARCONST WCHARCONST
 %token <dtype> NUM_INT NUM_FLOAT NUM_UNSIGNED NUM_LONG NUM_ULONG NUM_LONGLONG NUM_ULONGLONG NUM_BOOL
 %token <intvalue> TYPEDEF
@@ -2168,6 +2168,7 @@ include_directive: includetype options string BEGINFILE {
                      $$ = $6;
 		     scanner_set_location($1.filename,$1.line+1);
 		     if (strcmp($1.type,"include") == 0) set_nodeType($$,"include");
+		     if (strcmp($1.type,"force_include") == 0) set_nodeType($$,"force_include");
 		     if (strcmp($1.type,"import") == 0) {
 		       mname = $2 ? Getattr($2,"module") : 0;
 		       set_nodeType($$,"import");
@@ -2211,6 +2212,7 @@ include_directive: includetype options string BEGINFILE {
                ;
 
 includetype    : INCLUDE { $$.type = "include"; }
+               | FORCEINCLUDE { $$.type = "force_include"; }
                | IMPORT  { $$.type = "import"; ++import_mode;}
                ;
 

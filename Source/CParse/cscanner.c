@@ -986,7 +986,7 @@ int yylex(void) {
 	rename_active = 1;
 	return (NAMEWARN);
       }
-      if (strcmp(yytext, "%includefile") == 0)
+      if (strcmp(yytext, "%includefile") == 0 || strcmp(yytext, "%force_includefile") == 0)
 	return (INCLUDE);
       if (strcmp(yytext, "%beginfile") == 0)
 	return (BEGINFILE);
