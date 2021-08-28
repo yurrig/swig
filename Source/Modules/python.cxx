@@ -5053,7 +5053,11 @@ public:
       String *setname = Swig_name_set(NSPACE_TODO, mname);
       String *getname = Swig_name_get(NSPACE_TODO, mname);
       int assignable = is_assignable(n);
+<<<<<<< HEAD
          Printv(f_shadow, tab4, symname, " = property(", module, ".", getname, NIL);
+=======
+      Printv(f_shadow, tab4, symname, " = property(", module, ".", getname, NIL);
+>>>>>>> da9e7025b (Add %force_include preprocessor directive (include file even if already included))
       if (assignable)
 	Printv(f_shadow, ", ", module, ".", setname, NIL);
       if (have_docstring(n)) {
