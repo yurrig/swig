@@ -5053,11 +5053,23 @@ public:
       String *setname = Swig_name_set(NSPACE_TODO, mname);
       String *getname = Swig_name_get(NSPACE_TODO, mname);
       int assignable = is_assignable(n);
-<<<<<<< HEAD
-         Printv(f_shadow, tab4, symname, " = property(", module, ".", getname, NIL);
-=======
+      SwigType *type = Getattr(n, "type");
+      String *type_str = NULL;
+      if (type) {
+         if (Strcmp(type, "void") == 0) {
+            type_str = NULL;
+         }
+         else {
+            Node *nn = classLookup(type);
+            type_str = nn ? Copy(Getattr(nn, "sym:name")) : SwigType_str(type, 0);
+         }
+      }
+      if (type_str) {
+         Printv(f_shadow, tab4, symname, ": \"", type_str, "\" = property(", module, ".", getname, NIL);
+      }
+      else {
       Printv(f_shadow, tab4, symname, " = property(", module, ".", getname, NIL);
->>>>>>> da9e7025b (Add %force_include preprocessor directive (include file even if already included))
+      }
       if (assignable)
 	Printv(f_shadow, ", ", module, ".", setname, NIL);
       if (have_docstring(n)) {
