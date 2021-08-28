@@ -1220,7 +1220,7 @@ SWIGRUNTIME PyObject *
 SWIG_This(void)
 {
   if (Swig_This_global == NULL)
-    Swig_This_global = SWIG_Python_str_FromChar("this");
+    Swig_This_global = SWIG_Python_str_FromChar("_this");
   return Swig_This_global;
 }
 
