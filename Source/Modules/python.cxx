@@ -5055,14 +5055,13 @@ public:
       int assignable = is_assignable(n);
       Printv(f_shadow, tab4, symname, " = property(", module, ".", getname, NIL);
       if (assignable)
-	Printv(f_shadow, ", ", module, ".", setname, NIL);
+	     Printv(f_shadow, ", ", module, ".", setname, NIL);
       if (have_docstring(n)) {
 	String *s = docstring(n, AUTODOC_VAR, tab4);
 	if (Len(s))
 	  Printv(f_shadow, ", doc=", s, NIL);
       }
       Printv(f_shadow, ")\n", NIL);
-      Delete(variable_annotation);
       Delete(mname);
       Delete(setname);
       Delete(getname);
