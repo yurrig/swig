@@ -90,6 +90,7 @@ endif()
 configure_file (${SWIG_ROOT}/Tools/cmake/swigconfig.h.in
                 ${CMAKE_CURRENT_BINARY_DIR}/Source/Include/swigconfig.h)
 
+set(BISON_EXECUTABLE "${SWIG_ROOT}/../winflexbison/bin/Release/win_bison.exe" CACHE PATH "Bison executable")
 find_package (BISON REQUIRED)
 
 
