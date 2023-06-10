@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Swig</id>
+    <version>4.1.1</version>
+    <authors>The SWIG Developers</authors>
+    <description>SWIG is a software development tool that connects programs written in C and C++ with a variety of high-level programming languages.</description>
+    <tags>native nativepackage C++ swig</tags>
+    <projectUrl>https://swig.org/index.html</projectUrl>
+    <repository type="git" url="https://github.com/yurrig/swig" commit="24b4b98d66c11882756d13648d5fc5db4b5e6fbe" />
+  </metadata>
+  <files>
+    <file src="swig.props" target="build\native" />
+    <file src="Lib\**\*" target="build\native\Lib" />
+    <file src="build\swigwarn.swg" target="build\native\Lib" />
+    <file src="build\Release\swig.exe" target="build\native\bin" />
+  </files>
+</package>
